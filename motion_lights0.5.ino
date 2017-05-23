@@ -32,16 +32,15 @@ void loop(){
   Serial.println(pirState2);
   */
 
-   if ((pirState1 == HIGH | pirState2 == HIGH) & ldrValue <= 10) {
+   if (pirState1 == HIGH | pirState2 == HIGH) {
     movtTime = millis();
-    turnOn();
-
-    if (millis() - movtTime >= onTime) {
-    
-   }    
+   
+     if ldrValue <= 10 {
+     turnOn();
+     }
    }
 
-   if (millis() - movtTime >= onTime) {
+   if (pirState1 == LOW & pirState2 == LOW) & (currentTime - movtTime >= onTime) {
     turnOff();
    }
 
@@ -54,6 +53,7 @@ void loop(){
   // than the response from the PIR, and adding this delay
   // eliminated a flickering on the LED
   delay(100);
+  currentTime = millis();
 }
 
 void turnOn() {
