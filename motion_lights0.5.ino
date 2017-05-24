@@ -6,6 +6,7 @@ int LED = 3;
 bool pirState1;
 bool pirState2;
 int ldrValue;
+bool ledState;
 
 unsigned long movtTime;
 unsigned long currentTime;
@@ -21,6 +22,8 @@ void setup() {
 }
 
 void loop(){
+  currentTime = millis();
+  
   ldrValue = analogRead(LDR);
   pirState1 = digitalRead(PIR1);
   pirState2 = digitalRead(PIR2);  
@@ -35,12 +38,12 @@ void loop(){
    if (pirState1 == HIGH | pirState2 == HIGH) {
     movtTime = millis();
    
-     if ldrValue <= 10 {
+     if (ldrValue <= 10) {
      turnOn();
      }
    }
 
-   if (pirState1 == LOW & pirState2 == LOW) & (currentTime - movtTime >= onTime) {
+   if ((pirState1 == LOW & pirState2 == LOW & ledState == HIGH) & (currentTime - movtTime >= onTime)) {
     turnOff();
    }
 
@@ -53,7 +56,6 @@ void loop(){
   // than the response from the PIR, and adding this delay
   // eliminated a flickering on the LED
   delay(100);
-  currentTime = millis();
 }
 
 void turnOn() {
@@ -62,6 +64,7 @@ void turnOn() {
           analogWrite(LED, i);
           delay(200);
         }
+  ledState = HIGH;
 }
 
 void turnOff() {
@@ -70,5 +73,6 @@ void turnOff() {
           analogWrite(LED, i);
           delay(200);
         }
+  ledState = LOW;
 }
 
